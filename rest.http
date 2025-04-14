@@ -1,0 +1,21 @@
+### GET /
+GET http://localhost:8080 HTTP/1.1
+
+### POST /auth/register
+POST http://localhost:8080/auth/register HTTP/1.1
+Content-Type: application/json
+
+{
+  	"email": "john@gmail.com",
+  	"password": "John123!",
+  	"confirm_password": "John123!"
+}
+
+### POST /auth/login
+POST http://localhost:8080/auth/login HTTP/1.1
+Content-Type: application/json
+
+{
+  	"email": "john@gmail.com",
+  	"password": "John123!"
+}

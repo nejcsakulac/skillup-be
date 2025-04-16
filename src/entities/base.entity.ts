@@ -1,12 +1,12 @@
-import { CreateDateColumn, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm"
-import { Expose } from "class-transformer"
-import { IsUUID  } from "class-validator"
+import { CreateDateColumn, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
+import { Expose } from 'class-transformer'
+import { IsUUID } from 'class-validator'
 
-export class Base{
+export class Base {
   @PrimaryGeneratedColumn('uuid')
   @IsUUID()
   @Expose()
-  id: string;
+  id: string
 
   @CreateDateColumn()
   @Expose()

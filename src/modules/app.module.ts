@@ -3,7 +3,8 @@ import { ConfigModule } from '@nestjs/config'
 import { configValidationSchema } from 'config/schema.config'
 import { DatabaseModule } from './database/database.module'
 import { LoggerMiddleware } from '../middleware/logger.middleware'
-import { UsersModule } from "./users/users.module"
+import { UsersModule } from './users/users.module'
+import { AuthModule } from 'modules/auth/auth.module'
 
 @Module({
   imports: [
@@ -13,13 +14,14 @@ import { UsersModule } from "./users/users.module"
       validationSchema: configValidationSchema,
     }),
     DatabaseModule,
-    UsersModule
+    UsersModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(LoggerMiddleware).forRoutes({path: '*', method: RequestMethod.ALL })
+    consumer.apply(LoggerMiddleware).forRoutes({ path: '*', method: RequestMethod.ALL })
   }
 }

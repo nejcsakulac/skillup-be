@@ -1,3 +1,4 @@
+
 export interface PaginatedResult {
   data: any[]
   meta: {

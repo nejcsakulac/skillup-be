@@ -11,6 +11,8 @@ export class CreateUserDto {
   @IsNotEmpty()
   @IsEmail()
   email: string
+
+  @IsNotEmpty()
   role_id: string
 
   @IsNotEmpty()

@@ -5,6 +5,7 @@ import Logging from 'library/Logging'
 import { UsersService } from 'modules/users/users.service'
 import { compareHash, hash } from 'utils/bcrypt'
 import { RegisterUserDto } from './dto/register-user.dto'
+import { Request } from 'express'
 
 @Injectable()
 export class AuthService {
@@ -40,5 +41,10 @@ export class AuthService {
   async user(cookie: string): Promise<User> {
     const data = await this.jwtService.verifyAsync(cookie)
     return this.usersService.findById(data['id'])
+  }
+
+  async getUserId(request: Request): Promise<string>{
+    const user = request.user as User
+    return user.id
   }
 }

@@ -21,7 +21,7 @@ export class UsersService extends AbstractService {
       throw new BadRequestException('User with that email already exists.')
     }
     try {
-      const newUser = this.usersRepository.create({ ...createUserDto })
+      const newUser = this.usersRepository.create({ ...createUserDto, role: {id: createUserDto.role_id} })
       return this.usersRepository.save(newUser)
     } catch (error) {
       Logging.error(error)
@@ -45,7 +45,7 @@ export class UsersService extends AbstractService {
       user.password = await hash(password)
     }
     if (role_id) {
-      //user.role = {...user.role, id: role_id}
+      user.role = {...user.role, id: role_id}
     }
     try {
       Object.entries(data).map((entry) => {

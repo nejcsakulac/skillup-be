@@ -5,6 +5,8 @@ import { DatabaseModule } from './database/database.module'
 import { LoggerMiddleware } from '../middleware/logger.middleware'
 import { UsersModule } from './users/users.module'
 import { AuthModule } from 'modules/auth/auth.module'
+import { RolesModule } from './roles/roles.module'
+import { PermissionsModule } from './permissions/permissions.module'
 
 @Module({
   imports: [
@@ -16,6 +18,8 @@ import { AuthModule } from 'modules/auth/auth.module'
     DatabaseModule,
     UsersModule,
     AuthModule,
+    RolesModule,
+    PermissionsModule,
   ],
   controllers: [],
   providers: [],

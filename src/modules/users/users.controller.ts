@@ -32,7 +32,7 @@ export class UsersController {
   @Get()
   @HttpCode(HttpStatus.OK)
   async findAll(@Query('page') page: number): Promise<PaginatedResult> {
-    return this.usersService.paginate(page)
+    return this.usersService.paginate(page, ['role'])
   }
 
   @Get(':id')

@@ -11,7 +11,7 @@ export class UpdateUserDto {
   @IsOptional()
   @IsEmail()
   email?: string
-  // role_id: string
+  //role_id: string
 
   @IsOptional()
   role_id?: string

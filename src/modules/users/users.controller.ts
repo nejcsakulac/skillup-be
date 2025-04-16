@@ -11,7 +11,7 @@ import {
   Patch,
   Post,
   Query,
-  UploadedFile,
+  UploadedFile, UseGuards,
   UseInterceptors,
 } from '@nestjs/common'
 import { UsersService } from './users.service'
@@ -23,6 +23,9 @@ import { FileInterceptor } from '@nestjs/platform-express'
 import { isFileExtensionSafe, removeFile, saveImageToStorage } from '../../helpers/imageStorage'
 import * as process from 'node:process'
 import { join } from 'path'
+import {HasPermission} from "../../decorators/has-permission.decorator";
+import {JwtAuthGuard} from "../auth/guards/jwt.guard";
+import {PermissionGuard} from "../permissions/guard/permission.guard";
 
 @Controller('users')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -30,6 +33,7 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get()
+  @HasPermission('users')
   @HttpCode(HttpStatus.OK)
   async findAll(@Query('page') page: number): Promise<PaginatedResult> {
     return this.usersService.paginate(page, ['role'])

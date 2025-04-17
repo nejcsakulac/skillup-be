@@ -26,12 +26,17 @@ import { join } from 'path'
 import {HasPermission} from "../../decorators/has-permission.decorator";
 import {JwtAuthGuard} from "../auth/guards/jwt.guard";
 import {PermissionGuard} from "../permissions/guard/permission.guard";
+import {ApiBadRequestResponse, ApiCreatedResponse, ApiTags} from "@nestjs/swagger";
 
+
+@ApiTags('users')
 @Controller('users')
 @UseInterceptors(ClassSerializerInterceptor)
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
+  @ApiCreatedResponse({description: 'List all users'})
+  @ApiBadRequestResponse({description: 'erorr for list of users'})
   @Get()
   @HasPermission('users')
   @HttpCode(HttpStatus.OK)
@@ -45,7 +50,10 @@ export class UsersController {
     return this.usersService.findById(id)
   }
 
-  @Post(':id')
+
+  @ApiCreatedResponse({description: 'Creates a new user'})
+  @ApiBadRequestResponse({description: 'error for creating a new user'})
+  @Post()
   @HttpCode(HttpStatus.CREATED)
   async create(@Body() createUserDto: CreateUserDto): Promise<User> {
     return this.usersService.create(createUserDto)

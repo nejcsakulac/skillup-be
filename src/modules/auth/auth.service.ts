@@ -43,7 +43,7 @@ export class AuthService {
     return this.usersService.findById(data['id'])
   }
 
-  async getUserId(request: Request): Promise<string>{
+  async getUserId(request: Request): Promise<string> {
     const user = request.user as User
     return user.id
   }

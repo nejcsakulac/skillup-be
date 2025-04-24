@@ -9,6 +9,8 @@ import { RolesModule } from './roles/roles.module'
 import { PermissionsModule } from './permissions/permissions.module'
 import { ProductsModule } from './products/products.module'
 import { OrdersModule } from './orders/orders.module'
+import {APP_GUARD} from "@nestjs/core";
+import {PermissionGuard} from "./permissions/guard/permission.guard";
 
 @Module({
   imports: [

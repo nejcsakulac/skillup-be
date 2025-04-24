@@ -1,41 +1,47 @@
-const FileType = import('file-type')
 import * as fs from 'fs'
 import { diskStorage, Options } from 'multer'
 import { extname } from 'path'
 import Logging from '../library/Logging'
 
 type validFileExtensionsType = 'png' | 'jpg' | 'jpeg'
-type validMimeType = 'image/png' | 'image/jpg' | 'image/jpeg'
-
 const validFileExtensions: validFileExtensionsType[] = ['png', 'jpg', 'jpeg']
-const validMimeTypes: validMimeType[] = ['image/png', 'image/jpg', 'image/jpeg']
+const validMimeTypes: string[] = ['image/png', 'image/jpeg']
 
 export const saveImageToStorage: Options = {
   storage: diskStorage({
     destination: './files',
     filename(req, file, callback) {
-      // Create unique suffix
       const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9)
-      // Get file extension
       const ext = extname(file.originalname)
-      // Write filename
       const filename = `${uniqueSuffix}${ext}`
       callback(null, filename)
     },
   }),
   fileFilter(req, file, callback) {
-    const allowedMimeTypes: validMimeType[] = validMimeTypes
-    allowedMimeTypes.includes(file.mimetype as validMimeType) ? callback(null, true) : callback(null, false)
+    if (validMimeTypes.includes(file.mimetype)) {
+      callback(null, true)
+    } else {
+      callback(null, false)
+    }
   },
 }
 
 export const isFileExtensionSafe = async (fullFilePath: string): Promise<boolean> => {
-  return (await FileType).fileTypeFromFile(fullFilePath).then((fileExtensionAndMimeType) => {
-    const isFileTypeLegit = validFileExtensions.includes(fileExtensionAndMimeType.ext as validFileExtensionsType)
-    const isMimeTypeLegit = validMimeTypes.includes(fileExtensionAndMimeType.ext as validMimeType)
-    const isFileLegit = isFileTypeLegit && isMimeTypeLegit
-    return isFileLegit
-  })
+  try {
+    // Dynamically import ESM-only module to avoid CJS/ESM mismatch
+    const { fileTypeFromFile } = await import('file-type')
+    const fileInfo = await fileTypeFromFile(fullFilePath)
+    if (!fileInfo) {
+      return false
+    }
+    const { ext, mime } = fileInfo
+    const isFileTypeLegit = validFileExtensions.includes(ext as validFileExtensionsType)
+    const isMimeTypeLegit = validMimeTypes.includes(mime)
+    return isFileTypeLegit && isMimeTypeLegit
+  } catch (err) {
+    Logging.error(err)
+    return false
+  }
 }
 
 export const removeFile = (fullFilePath: string): void => {

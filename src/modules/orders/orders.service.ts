@@ -47,17 +47,20 @@ export class OrdersService extends AbstractService {
         response.send(csv)
     }
     async chart(): Promise<{ date: string; sum: string }[]> {
-        const apiData = await this.ordersRepository.query(`
-        SELECT to_date(cast (o.created_at as TEXT), '%Y-%m-%d') as date, sum(oi.price oi.quantity) as sum FROM "order" o JOIN "order_item" oi ON o.id = oi.order_id
-        GROUP BY date;
-        `)
-        const chartData: { date: string; sum: string }[] = []
-        for (let index = 0; index < apiData.length; index++) {
-            chartData.push({
-                date: (apiData[index].date as Date).toISOString().split('T')[0],
-                sum: apiData[index].sum,
-            })
-            return chartData
-        }
+        const raw: Array<{ date: Date; total_revenue: string }> =
+            await this.ordersRepository.query(`
+                SELECT
+                    CAST(o.created_at AS date)   AS date,
+        SUM(oi.price * oi.quantity)  AS total_revenue
+                FROM "order" o
+                    JOIN "order_item" oi ON o.id = oi.order_id
+                GROUP BY date
+                ORDER BY date;
+            `);
+
+        return raw.map(r => ({
+            date: r.date.toISOString().split('T')[0],
+            sum: r.total_revenue,
+        }));
     }
 }

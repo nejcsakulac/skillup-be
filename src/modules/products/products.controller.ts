@@ -61,7 +61,7 @@ export class ProductsController {
         throw new BadRequestException('File content does not match extension!')
     }
 
-    @Patch('id')
+    @Patch(':id')
     @HttpCode(HttpStatus.OK)
     async update(@Param('id') id: string, @Body() updateProductDto: CreateUpdateProductDto): Promise<Product> {
         return this.productsService.update(id, updateProductDto)

@@ -8,7 +8,7 @@ Content-Type: application/json
 {
   "first_name": "nejc",
   "last_name": "sakulac",
-  "email": "john2@gmail.com",
+  "email": "john4@gmail.com",
   "password": "John123!",
   "confirm_password": "John123!"
 }
@@ -18,16 +18,16 @@ POST http://localhost:8080/auth/login HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "john2@gmail.com",
+  "email": "john8@gmail.com",
   "password": "John123!"
 }
 
 ### PATCH /users/:id
-PATCH http://localhost:8080/users/a7b42c36-fbde-4612-bdfd-e6f0a79462f0 HTTP/1.1
+PATCH http://localhost:8080/users/32fa9e40-57a2-4da8-aa01-8569d2069217 HTTP/1.1
 Content-Type: application/json
 
 {
-  "role_id": "f41ce387-4b08-4f09-821e-97b1adb9b97f"
+  "first_name": "jebemti mater"
 }
 
 
@@ -69,11 +69,35 @@ Content-Type: application/json
 DELETE http://localhost:8080/roles/ad58c478-ca2a-4ea3-b0c6-b95cd4fca6b2
 
 ### PATCH /roles/:id
-PATCH http://localhost:8080/roles/24ec9b62-e675-4ae3-b565-616f80234046
+PATCH http://localhost:8080/roles/f41ce387-4b08-4f09-821e-97b1adb9b97f
 Content-Type: application/json
 
 {
-  "name": "Admin",
-  "permissions": ["0c8447b1-dbf0-4ae3-b27b-e91d1ab0a745", "571db79b-a963-4741-9720-e9bcb95cde69"]
+  "name": "Adminn",
+  "permissions": ["a2aa042c-1e53-4647-a01b-e387006a8973"]
 }
+
+
+### PATCH /products/:id
+PATCH http://localhost:8080/products/4ea07f3a-192f-4118-9b11-32a50f9b07ff HTTP/1.1
+Content-Type: application/json
+
+{
+  "title": "as (edited)",
+  "description": "dasdadasdas (edited)",
+  "price": 15,
+  "image": null
+}
+
+### POST /products
+POST http://localhost:8080/products HTTP/1.1
+Content-Type: application/json
+
+{
+  "title": "New Awesome Widget",
+  "description": "This widget does awesome things!",
+  "price": 25,
+  "image": null
+}
+
 
